@@ -18,7 +18,7 @@ The two tracks can further be divided in to two sub tracks where one track invol
 
 ---
 <details>
-<summary><h2 style="display: inline;">Track A: Text-to-Text Docker API</h2></summary>
+<summary><h2 style="display: inline;">Track A: Text-to-Text Docker API Submission</h2></summary>
 
 <div markdown="1">
 
@@ -368,7 +368,7 @@ The modular design allows you to focus on the components most critical to your a
 ---
 
 <details>
-<summary><h2 style="display: inline;">Track B: Text-to-Video Docker API</h2></summary>
+<summary><h2 style="display: inline;">Track B: Text-to-Video Docker API Submission</h2></summary>
 
 <div markdown="1">
 
@@ -464,7 +464,7 @@ The generator function should return a dictionary with the following keys:
 
 The generator or the text-to-video model can be either an open-source text-to-video model or an API call. The core backend infrastructure of the Arena platform expects the generated video to be stored in a dedicated S3 Bucket (that is assigned to participants on registration) and expects the generated output to be named "output.mp4". 
 
-![S3 Bucket with Video Output](/assets/img/submission/s3.png){: .img-fluid .rounded .shadow-sm}
+![S3 Bucket with Video Output](/assets/img/submission/s3.png)
 
 ## Text to VideoTrack Sample Docker File 
 
@@ -539,7 +539,7 @@ NOTE :
 ---
 
 <details>
-<summary><h2 style="display: inline;">Tracks C and D:  Text-to-Text and Video Output generations</h2></summary>
+<summary><h2 style="display: inline;">Tracks C and D:  Text-to-Text and Video Validation set Output generations</h2></summary>
 
 <div markdown="1">
 
@@ -585,5 +585,3 @@ Each line in the `.jsonl` should be a JSON entry that minimally contains the fol
   "generated_video_fname": "string"  // Video filename in compressed folder
 }
 ```
-
-
