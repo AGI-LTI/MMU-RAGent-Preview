@@ -18,7 +18,7 @@ The two tracks can further be divided in to two sub tracks where one track invol
 
 ---
 <details>
-<summary><h2 style="display: inline;">Track A: Text-to-Text Docker API Submission</h2></summary>
+<summary><h2 style="display: inline;">A: Text-to-Text</h2></summary>
 
 <div markdown="1">
 
@@ -368,7 +368,7 @@ The modular design allows you to focus on the components most critical to your a
 ---
 
 <details>
-<summary><h2 style="display: inline;">Track B: Text-to-Video Docker API Submission</h2></summary>
+<summary><h2 style="display: inline;">B Text-to-Video</h2></summary>
 
 <div markdown="1">
 
@@ -539,7 +539,7 @@ NOTE :
 ---
 
 <details>
-<summary><h2 style="display: inline;">Tracks C and D:  Text-to-Text and Video Validation set Output generations</h2></summary>
+<summary><h2 style="display: inline;">Validation set Output generation</h2></summary>
 
 <div markdown="1">
 
@@ -559,7 +559,7 @@ Submission of validation set generations entitles you to a chance to win **non-c
 
 **Submission format and requirements:**
 
-#### Track A: Text-to-Text Generation
+#### Text-to-Text Generation
 
 Submit a `.jsonl` file with your generated text outputs. Each line should contain a JSON entry that minimally contains the following keys:
 
@@ -570,7 +570,7 @@ Submit a `.jsonl` file with your generated text outputs. Each line should contai
 }
 ```
 
-#### Track B: Text-to-Video Generation
+#### Text-to-Video Generation
 
 
 Submit a **compressed folder** containing:
