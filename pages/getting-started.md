@@ -4,17 +4,23 @@ title: Getting Started
 permalink: /getting-started/
 ---
 
-This page provides everything you need to prepare your system for submission. You'll find:
+## Registration
+Irrespective of any track you choose to participate you should register yourself as team by filling out the following google form!
 
-- **API documentation** with clear examples to help you query our web-scale corpora  
-- **Step-by-step instructions** for building your Docker image  
-- **Guidance on integrating retrieval and generation components**  
-- **A validation tool** to test your submission locally before upload  
+**Link:** [https://forms.gle/YDEnjV4PXWnZdfYG8](https://forms.gle/YDEnjV4PXWnZdfYG8)
 
-Whether you're entering one or both tracks, this page is your starting point for building, testing, and refining your RAG system.
+**Note** that while we do not have a limitation on the number of participants in a team, we want a dedicated team leader who would act as a liaison between the organizers and the rest of the team.
+
+The two tracks can further be divided in to two sub tracks where one track involves the submission of a API contained in a docker image and the other track involves the Submission of the outputs generated for the validation set.
+
+**Note**  Submission of validation set generations entitles you to a chance to win **non-cash prizes only**. These submissions are **not eligible for cash prizes** to ensure fairness.
+
 
 ---
-# Track A: Text-to-Text
+<details>
+<summary><h2 style="display: inline;">Track A: Text-to-Text Docker API</h2></summary>
+
+<div markdown="1">
 
 ## Static Evaluation: Submission Template and API Specification
 
@@ -215,8 +221,6 @@ Verify that:
 - Response times should be reasonable (typically under 2 minutes for complex queries)
 - The system supports both streaming and non-streaming implementations, but streaming is preferred for better user experience
 
-
-
 ---
 
 ## ClueWeb Search API Documentation
@@ -359,4 +363,227 @@ The system uses a YAML configuration file (`config.yaml`) to manage:
 
 The modular design allows you to focus on the components most critical to your approach while providing a solid foundation for the complete RAG system.
 
+</div>
+</details>
 ---
+
+<details>
+<summary><h2 style="display: inline;">Track B: Text-to-Video Docker API</h2></summary>
+
+<div markdown="1">
+
+Once a team is registered the organizers will contact them on their registered email (preferably gmail) and will be assigning the following items.
+
+1. Team ID
+2. ECR Repository ARN
+3. AWS ECR access keys
+4. S3 bucket name and region    
+
+## Text-to-Video Track: Starter Code
+
+The starter code for the text-to-video track can be found in the following file: [https://github.com/AGI-LTI/MMU-RAG-Starter/blob/main/Text-to-Video/submission_starter_video.py](https://github.com/AGI-LTI/MMU-RAG-Starter/blob/main/Text-to-Video/submission_starter_video.py)
+
+
+Participants are expected to complete two functions one for the retriever and one for the generator as mentioned in the starter code.
+
+The main backend has a single endpoint `generate-video` that returns the s3-Storage URI, the region of the s3 bucket (where the video is stored) and retrieved docs along with some metadata like the status and the error message.
+
+### Retriever
+
+```python
+class RetrieverResponse(TypedDict):
+    status: str
+    error: Optional[str]
+    retrieved_docs: List[str]
+def retriever(question) -> RetrieverResponse: 
+        """
+        To be filled by the Partipant. Ideally we expect the participant to retrive top -k documents with each document of String datatype
+        as an element of the list.
+        Returns a dictionary 
+            {
+                "status" : "error" OR "success
+                "error" : "No documents retrieved" OR None
+                "retrieved_docs"  : [] or retrieved document
+            }
+        """
+        return {
+            "status" : "success",
+            "error" : None,
+            "retrieved_docs" : ["document1", "document2", "document3"]
+        }
+```
+
+Participants can use any retriever implementation but they are expected to return a dictionary of the following keys:
+
+| Key | Type | Description |
+|-------|------|-------------|
+| Status | string | Must be either "error" or "success" |
+| Error | string/None | An appropriate error message for debugging, or None if there is no error |
+| Retrieved_docs | list | A Python list containing text from the retrieved documents, or an empty list if retrieval was unsucessfull |
+
+### Generator
+
+```python
+class GeneratorResponse(TypedDict):
+     status : str
+     error : Optional[str]
+     s3_BUCKET_NAME : str
+     region : str
+     Storage_Uri : Optional[str]
+def generator(retrieved_docs, question) -> GeneratorResponse:
+        """
+        To be filled by the Partipant. We expect the particpants to generate a video and store it in an s3 bucket.
+        Returns a dictionary
+            {
+                "status" : "error" OR "success
+                "error" : Appropraite error message for any intermediate steps  OR None
+                "s3_BUCKET_NAME" :  The s3 bucket assigned to the team, this will be used an integrity check in the main backend
+                "Storage_Uri" : The storage Uri of the generated video in the assigned s3 bucket or None
+            }
+        """
+        return {
+            "status" : "success",
+            "error" : None,
+            "s3_BUCKET_NAME" : "ragarena-videos",
+            "region" : "us-east-1",
+            "Storage_Uri" : "https://ragarena-videos.s3.amazonaws.com/video.mp4"
+        }
+```
+
+The generator function should return a dictionary with the following keys:
+
+
+| Key | Type | Description |
+|-------|------|-------------|
+| status | string | Must be either "error" or "success" |
+| Error | string/None | An appropriate error message for debugging, or None if there is no error |
+| s3_BUCKET_NAME | string | The name of the s3 bucket assigned to the team |
+| region | string | AWS region of the s3 bucket |
+| Storage Uri | string | The s3 Object id under which the output video is stored |
+
+
+The generator or the text-to-video model can be either an open-source text-to-video model or an API call. The core backend infrastructure of the Arena platform expects the generated video to be stored in a dedicated S3 Bucket (that is assigned to participants on registration) and expects the generated output to be named "output.mp4". 
+
+![S3 Bucket with Video Output](/assets/img/submission/s3.png){: .img-fluid .rounded .shadow-sm}
+
+## Text to VideoTrack Sample Docker File 
+
+```dockerfile
+FROM python:3.11-slim
+
+# Set working directory
+WORKDIR /app
+
+# Copy requirements first to leverage Docker cache
+COPY requirements.txt .
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    postgresql-client \
+    libpq-dev \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install Python dependencies
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copy application code (includes .env file)
+COPY . .
+
+# Expose port
+EXPOSE 4001
+
+# Use Gunicorn to manage Uvicorn workers for production
+# This command starts Gunicorn with 15 worker processes.
+# Each worker is a Uvicorn process, allowing for parallel request handling.
+CMD ["gunicorn", "-w", "2", "-k", "uvicorn.workers.UvicornWorker", "video_baseline:app", "--bind", "0.0.0.0:4001", "--timeout", "2000"]
+```
+
+## DockerImage Creation commands
+
+```bash
+# Build the image
+docker build --platform linux/amd64 -t my-app:latest .
+
+# Authenticate to ECR
+aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 123456789012.dkr.ecr.us-east-1.amazonaws.com
+
+# Tag for ECR
+docker tag my-app:latest 123456789012.dkr.ecr.us-east-1.amazonaws.com/my-app:latest
+
+# Push to ECR
+docker push 123456789012.dkr.ecr.us-east-1.amazonaws.com/my-app:latest
+```
+
+
+
+## Text to VideoTrack Docker Image specifications
+
+Each image should:
+1.  No larger than **20 GB**
+2.  Operate on a **single GPU with 24GB** of memory
+
+## Image Submission guidelines
+
+Once you have created your text-to-video RAG system you should push it to ECR repository with the Image tag as **Latest** and fill out the follwing google form.
+
+**Link:** [https://forms.gle/9uNcyrwDuZNZA569A](https://forms.gle/9uNcyrwDuZNZA569A)
+
+NOTE :
+1. Any team can only make 1 submission per week 
+2. Ensure that the Image tag of your final submission must be **Latest**
+3. Ensure that the Image you build is supports **amd64** architecture.
+
+</div>
+</details>
+
+---
+
+<details>
+<summary><h2 style="display: inline;">Tracks C and D:  Text-to-Text and Video Output generations</h2></summary>
+
+<div markdown="1">
+
+Once a team is registered the organizers will contact them on their registered email (preferably gmail) and will be assigning the following items.
+
+1. Team ID
+2. Google Drive folder for uploading your text-to-text results
+3. Google Drive folder for uploading your text-to-video results
+
+Once you have created your RAG system you should upload your results to your assigned Google Drive folder and fill out the following google form.
+
+**Link:** [https://forms.gle/wRVKH7YfZXaM5QS1A](https://forms.gle/wRVKH7YfZXaM5QS1A)
+
+Note:
+Submission of validation set generations entitles you to a chance to win **non-cash prizes only**. These submissions are **not eligible for cash prizes** to ensure fairness.
+
+
+**Submission format and requirements:**
+
+#### Track A: Text-to-Text Generation
+
+Submit a `.jsonl` file with your generated text outputs. Each line should contain a JSON entry that minimally contains the following keys:
+
+```json
+{
+  "query_id": "string",  // Corresponding query_id from validation set
+  "generated_response": "string"  // Generated text response
+}
+```
+
+#### Track B: Text-to-Video Generation
+
+
+Submit a **compressed folder** containing:
+- The generated video files
+- A `.jsonl` file mapping queries to the generated video file
+
+Each line in the `.jsonl` should be a JSON entry that minimally contains the following keys:
+
+```json
+{
+  "query_id": "string",  // Corresponding query_id from validation set,
+  "generated_video_fname": "string"  // Video filename in compressed folder
+}
+```
+
+
