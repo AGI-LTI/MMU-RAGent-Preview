@@ -15,6 +15,10 @@ title: MMU-RAG
 # Your name to show in the footer
 author: MMU-RAG
 
+# URL and baseurl for GitHub Pages
+url: "https://agi-lti.github.io"
+baseurl: "/MMU-RAGent-Preview"
+
 ###############################################
 # --- List of links in the navigation bar --- #
 ###############################################

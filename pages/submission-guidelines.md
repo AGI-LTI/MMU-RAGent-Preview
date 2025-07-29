@@ -12,7 +12,7 @@ To participate:
 1. Register yourself as a team.
 2. *(Optional)* Download the starter code provided by the organizing team.
 3. Develop your RAG system.
-4. To particpate in both static and live evalution checkout [tracks A and B](/getting-started/) from the getting started page.
+4. To particpate in both static and live evalution checkout [tracks A and B]({{ site.baseurl }}/getting-started/) from the getting started page.
 5. To submit your results on only the validation set checkout the Validation set output submission header below.
   - Submission of validation set generations entitles you to a chance to win **non-cash prizes only**. These submissions are **not eligible for cash prizes** to ensure fairness.
 
@@ -22,7 +22,7 @@ To participate:
 
 <div markdown="1">
 
-## Text to VideoTrack Sample Docker File 
+### Text to VideoTrack Sample Docker File 
 
 ```dockerfile
 FROM python:3.11-slim
@@ -54,7 +54,7 @@ EXPOSE 4001
 CMD ["gunicorn", "-w", "2", "-k", "uvicorn.workers.UvicornWorker", "video_baseline:app", "--bind", "0.0.0.0:4001", "--timeout", "2000"]
 ```
 
-## DockerImage Creation and ECR repository push commands
+### DockerImage Creation and ECR repository push commands
 
 ```bash
 # Build the image
@@ -71,13 +71,13 @@ docker push 123456789012.dkr.ecr.us-east-1.amazonaws.com/my-app:latest
 ```
 
 
-## Text to VideoTrack Docker Image specifications
+### Text to VideoTrack Docker Image specifications
 
 Each image should:
 1.  No larger than **20 GB**
 2.  Operate on a **single GPU with 24GB** of memory
 
-## Image Submission guidelines
+### Image Submission guidelines
 
 Once you have pushed your Docker image to the ECR repository with the tag **latest** you should notify the organizers by filling the following google form.
 

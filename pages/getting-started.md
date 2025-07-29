@@ -17,11 +17,11 @@ Irrespective of any track you choose to participate you should register yourself
 
 <div markdown="1">
 
-## Static Evaluation: Submission Template and API Specification
+### Static Evaluation: Submission Template and API Specification
 
 For static evaluation submissions, your system should implement an `/evaluate` endpoint that generates responses for validation set queries. This endpoint will be used to produce the `.jsonl` file required for submission.
 
-### Required Endpoint
+#### Required Endpoint
 
 Your service must expose the following endpoint for static evaluation:
 
@@ -29,7 +29,7 @@ Your service must expose the following endpoint for static evaluation:
 POST /evaluate
 ```
 
-### Request Format
+#### Request Format
 
 **Content-Type:** `application/json`
 
@@ -42,12 +42,12 @@ POST /evaluate
 }
 ```
 
-#### Parameters
+##### Parameters
 - `query` (required, string): The research question/query from the validation set
 - `reference` (required, string): The reference answer or context provided in the validation set
 - `iid` (required, string): The instance identifier from the validation dataset
 
-### Response Format
+##### Response Format
 
 **Content-Type:** `application/json`
 
@@ -59,11 +59,11 @@ POST /evaluate
 }
 ```
 
-## Dynamic Evaluation: Submission Template and API Specification
+### Dynamic Evaluation: Submission Template and API Specification
 
 For a validation submission, Your system must implement a specific streaming API that follows our standardized response format.
 
-### Required Endpoint
+#### Required Endpoint
 
 Your service must expose the following endpoint:
 
@@ -71,7 +71,7 @@ Your service must expose the following endpoint:
 POST /run
 ```
 
-## Request Format
+### Request Format
 
 **Content-Type:** `application/json`
 
@@ -82,17 +82,17 @@ POST /run
 }
 ```
 
-#### Parameters
+##### Parameters
 - `question` (required, string): The research question/query from the user
 
-#### Example Request
+##### Example Request
 ```json
 {
   "question": "What are the latest developments in quantum computing?"
 }
 ```
 
-### Response Format
+#### Response Format
 
 **Content-Type:** `text/event-stream` (preferred) or `text/plain`
 
@@ -103,11 +103,11 @@ data: {"intermediate_steps": "...", "final_report": "...", "is_intermediate": tr
 data: {"intermediate_steps": "...", "final_report": "...", "is_intermediate": false, "complete": true}
 ```
 
-### Required JSON Response Fields
+#### Required JSON Response Fields
 
 Each JSON object in the stream must contain these fields:
 
-#### Core Fields (Required)
+##### Core Fields (Required)
 
 | Field | Type | Description |
 |-------|------|-------------|
@@ -116,14 +116,14 @@ Each JSON object in the stream must contain these fields:
 | `is_intermediate` | boolean | `true` when showing thinking process, `false` when generating final answer |
 | `complete` | boolean | `true` on the final message to signal completion |
 
-#### Optional Fields
+##### Optional Fields
 
 | Field | Type | Description |
 |-------|------|-------------|
 | `citations` | array | List of citation objects (see format below) |
 | `error` | string | Error message if something goes wrong (stops the stream) |
 
-#### Citation Format (Optional)
+##### Citation Format (Optional)
 
 Citations are displayed in the frontend as numbered clickable links: `[1]`, `[2]`, `[3]`, etc. The numbering is automatic based on array order.
 
@@ -139,28 +139,28 @@ Citations are displayed in the frontend as numbered clickable links: `[1]`, `[2]
 
 > **Note:** Citations always appear as `[1]`, `[2]`, `[3]` regardless of URL content. Each number is a clickable link to the corresponding URL.
 
-### Streaming Response Pattern
+#### Streaming Response Pattern
 
 Your service should follow this behavioral pattern:
 
-#### 1. Thinking Phase
+##### 1. Thinking Phase
 - Start with `is_intermediate: true`
 - Populate `intermediate_steps` with research process
 - Set `final_report: null`
 - Set `complete: false`
 
-#### 2. Answer Generation Phase  
+##### 2. Answer Generation Phase  
 - Switch to `is_intermediate: false`
 - Start populating `final_report` with answer content
 - Keep accumulated `intermediate_steps`
 - Set `complete: false`
 
-#### 3. Completion
+##### 3. Completion
 - Send final message with `complete: true`
 - Include final complete answer in `final_report`
 - Include citations if available
 
-### Error Handling
+#### Error Handling
 
 If your service encounters an error, send an error response and stop the stream:
 
@@ -171,7 +171,7 @@ If your service encounters an error, send an error response and stop the stream:
 }
 ```
 
-### Docker Requirements
+#### Docker Requirements
 
 Your service must be containerized for deployment. Create a `Dockerfile` in your service directory.
 
@@ -192,7 +192,7 @@ EXPOSE 8000
 CMD ["gunicorn", "main:app", "-w", "4", "-k", "uvicorn.workers.UvicornWorker", "--bind", "0.0.0.0:8000"]
 ```
 
-### Testing Your Implementation
+#### Testing Your Implementation
 
 You can test your service independently by sending POST requests to `/run`:
 
@@ -209,7 +209,7 @@ Verify that:
 - Final message has `complete: true`
 - Intermediate steps use `|||---|||` separators
 
-### Notes
+#### Notes
 
 - The main application handles user session management, database logging, and frontend integration
 - Your service only needs to focus on generating high-quality research responses
@@ -218,12 +218,12 @@ Verify that:
 
 ---
 
-## ClueWeb Search API Documentation
+### ClueWeb Search API Documentation
 
 **Base URL:**  
 `https://clueweb22.us/search`
 
-### Authentication
+#### Authentication
 
 All requests **must** include a valid API key in the header:
 
@@ -233,7 +233,7 @@ x-api-key: <YOUR_RETRIEVER_API_KEY>
 
 > **Note:** Your API key will be assigned to you after sign up for the competition.
 
-### HTTP Request
+#### HTTP Request
 
 ```http
 GET https://clueweb22.us/search
@@ -246,7 +246,7 @@ GET https://clueweb22.us/search
 | query  | string  | yes      | The search query string.       |
 | k      | integer | yes      | Number of documents to return. |
 
-### Response
+#### Response
 
 The API returns a JSON object with a single field:
 
@@ -259,7 +259,7 @@ Each decoded document JSON has at least the following fields:
 | text  | string | The full text of the retrieved document.    |
 | url   | string | The original URL of the document.           |
 
-### Example Code (Python)
+#### Example Code (Python)
 
 ```python
 import base64
@@ -312,17 +312,17 @@ if __name__ == "__main__":
 
 ---
 
-## Implementing Retrieval and Generation Components
+### Implementing Retrieval and Generation Components
 
 We've provided a modular starter code template to help you build your RAG system efficiently. The codebase is structured with separate components for each stage of the pipeline, making it easy to experiment and iterate.
 
-### Starter Code Repository
+#### Starter Code Repository
 
 **GitHub Repository:** [https://github.com/AGI-LTI/MMU-RAG-Starter](https://github.com/AGI-LTI/MMU-RAG-Starter)
 
 The starter code provides a complete RAG pipeline framework with the following modular components:
 
-### Core Pipeline Components
+#### Core Pipeline Components
 
 1. **Pipeline Orchestrator** (`pipeline.py`)
    - Main entry point that coordinates all RAG components
@@ -340,7 +340,7 @@ The starter code provides a complete RAG pipeline framework with the following m
    - **Retriever** (`retriever.py`): Search the index and retrieve relevant chunks
    - **Generator** (`generator.py`): Generate answers using retrieved context
 
-### Configuration-Driven Approach
+#### Configuration-Driven Approach
 
 The system uses a YAML configuration file (`config.yaml`) to manage:
 - Data directories and file paths
@@ -348,7 +348,7 @@ The system uses a YAML configuration file (`config.yaml`) to manage:
 - Model selections for embedding and generation
 - Retrieval parameters (top-k, etc.)
 
-### Getting Started
+#### Getting Started
 
 1. Clone the starter repository: [https://github.com/AGI-LTI/MMU-RAG-Starter](https://github.com/AGI-LTI/MMU-RAG-Starter)
 2. Review the modular component structure in the `/src` folder
@@ -374,7 +374,7 @@ Once a team is registered the organizers will contact you on their registered em
 3. AWS ECR access keys
 4. S3 bucket name and region    
 
-## Text-to-Video Track: Starter Code
+### Text-to-Video Track: Starter Code
 
 The starter code for the text-to-video track can be found in the following file: [https://github.com/AGI-LTI/MMU-RAG-Starter/blob/main/Text-to-Video/submission_starter_video.py](https://github.com/AGI-LTI/MMU-RAG-Starter/blob/main/Text-to-Video/submission_starter_video.py)
 
@@ -383,7 +383,7 @@ Participants are expected to complete two functions one for the retriever and on
 
 The main backend has a single endpoint `generate-video` that returns the s3-Storage URI, the region of the s3 bucket (where the video is stored) and retrieved docs along with some metadata like the status and the error message.
 
-### Retriever
+#### Retriever
 
 ```python
 class RetrieverResponse(TypedDict):
@@ -416,7 +416,7 @@ Participants can use any retriever implementation but they are expected to retur
 | Error | string/None | An appropriate error message for debugging, or None if there is no error |
 | Retrieved_docs | list | A Python list containing text from the retrieved documents, or an empty list if retrieval was unsucessfull |
 
-### Generator
+#### Generator
 
 ```python
 class GeneratorResponse(TypedDict):
@@ -459,7 +459,7 @@ The generator function should return a dictionary with the following keys:
 
 The generator or the text-to-video model can be either an open-source text-to-video model or an API call. The core backend infrastructure of the Arena platform expects the generated video to be stored in a dedicated S3 Bucket (that is assigned to participants on registration) and expects the generated output to be named "output.mp4". 
 
-![S3 Bucket with Video Output](/assets/img/submission/s3.png)
+![S3 Bucket with Video Output]({{ site.baseurl }}/assets/img/submission/s3.png){: .img-fluid .rounded .shadow-sm}
 
 
 </div>
