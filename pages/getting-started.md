@@ -5,16 +5,11 @@ permalink: /getting-started/
 ---
 
 ## Registration
-Irrespective of any track you choose to participate you should register yourself as team by filling out the following google form!
+Irrespective of any track you choose to participate you should register yourself as team by filling out the following google form! 
 
 **Link:** [https://forms.gle/YDEnjV4PXWnZdfYG8](https://forms.gle/YDEnjV4PXWnZdfYG8)
 
 **Note** that while we do not have a limitation on the number of participants in a team, we want a dedicated team leader who would act as a liaison between the organizers and the rest of the team.
-
-The two tracks can further be divided in to two sub tracks where one track involves the submission of a API contained in a docker image and the other track involves the Submission of the outputs generated for the validation set.
-
-**Note**  Submission of validation set generations entitles you to a chance to win **non-cash prizes only**. These submissions are **not eligible for cash prizes** to ensure fairness.
-
 
 ---
 <details>
@@ -372,7 +367,7 @@ The modular design allows you to focus on the components most critical to your a
 
 <div markdown="1">
 
-Once a team is registered the organizers will contact them on their registered email (preferably gmail) and will be assigning the following items.
+Once a team is registered the organizers will contact you on their registered email (preferably gmail) and will be assigning the following items.
 
 1. Team ID
 2. ECR Repository ARN
@@ -466,122 +461,9 @@ The generator or the text-to-video model can be either an open-source text-to-vi
 
 ![S3 Bucket with Video Output](/assets/img/submission/s3.png)
 
-## Text to VideoTrack Sample Docker File 
-
-```dockerfile
-FROM python:3.11-slim
-
-# Set working directory
-WORKDIR /app
-
-# Copy requirements first to leverage Docker cache
-COPY requirements.txt .
-
-# Install system dependencies
-RUN apt-get update && apt-get install -y \
-    postgresql-client \
-    libpq-dev \
-    && rm -rf /var/lib/apt/lists/*
-
-# Install Python dependencies
-RUN pip install --no-cache-dir -r requirements.txt
-
-# Copy application code (includes .env file)
-COPY . .
-
-# Expose port
-EXPOSE 4001
-
-# Use Gunicorn to manage Uvicorn workers for production
-# This command starts Gunicorn with 15 worker processes.
-# Each worker is a Uvicorn process, allowing for parallel request handling.
-CMD ["gunicorn", "-w", "2", "-k", "uvicorn.workers.UvicornWorker", "video_baseline:app", "--bind", "0.0.0.0:4001", "--timeout", "2000"]
-```
-
-## DockerImage Creation commands
-
-```bash
-# Build the image
-docker build --platform linux/amd64 -t my-app:latest .
-
-# Authenticate to ECR
-aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 123456789012.dkr.ecr.us-east-1.amazonaws.com
-
-# Tag for ECR
-docker tag my-app:latest 123456789012.dkr.ecr.us-east-1.amazonaws.com/my-app:latest
-
-# Push to ECR
-docker push 123456789012.dkr.ecr.us-east-1.amazonaws.com/my-app:latest
-```
-
-
-
-## Text to VideoTrack Docker Image specifications
-
-Each image should:
-1.  No larger than **20 GB**
-2.  Operate on a **single GPU with 24GB** of memory
-
-## Image Submission guidelines
-
-Once you have created your text-to-video RAG system you should push it to ECR repository with the Image tag as **Latest** and fill out the follwing google form.
-
-**Link:** [https://forms.gle/9uNcyrwDuZNZA569A](https://forms.gle/9uNcyrwDuZNZA569A)
-
-NOTE :
-1. Any team can only make 1 submission per week 
-2. Ensure that the Image tag of your final submission must be **Latest**
-3. Ensure that the Image you build is supports **amd64** architecture.
 
 </div>
 </details>
 
 ---
 
-<details>
-<summary><h2 style="display: inline;">Validation set Output generation</h2></summary>
-
-<div markdown="1">
-
-Once a team is registered the organizers will contact them on their registered email (preferably gmail) and will be assigning the following items.
-
-1. Team ID
-2. Google Drive folder for uploading your text-to-text results
-3. Google Drive folder for uploading your text-to-video results
-
-Once you have created your RAG system you should upload your results to your assigned Google Drive folder and fill out the following google form.
-
-**Link:** [https://forms.gle/wRVKH7YfZXaM5QS1A](https://forms.gle/wRVKH7YfZXaM5QS1A)
-
-Note:
-Submission of validation set generations entitles you to a chance to win **non-cash prizes only**. These submissions are **not eligible for cash prizes** to ensure fairness.
-
-
-**Submission format and requirements:**
-
-#### Text-to-Text Generation
-
-Submit a `.jsonl` file with your generated text outputs. Each line should contain a JSON entry that minimally contains the following keys:
-
-```json
-{
-  "query_id": "string",  // Corresponding query_id from validation set
-  "generated_response": "string"  // Generated text response
-}
-```
-
-#### Text-to-Video Generation
-
-
-Submit a **compressed folder** containing:
-- The generated video files
-- A `.jsonl` file mapping queries to the generated video file
-
-Each line in the `.jsonl` should be a JSON entry that minimally contains the following keys:
-
-```json
-{
-  "query_id": "string",  // Corresponding query_id from validation set,
-  "generated_video_fname": "string"  // Video filename in compressed folder
-}
-```
