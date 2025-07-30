@@ -6,8 +6,8 @@ permalink: /datasets/
 
 To support the development and debugging of your models, we are releasing a **validation set for each track** of the MMU-RAG competition:
 
-- [**Track 1: Text-to-Text**](https://drive.google.com/drive/u/0/folders/1cVIuEJsz2Pow-USGh1cnFrcn98KGypS4)
-- [**Track 2: Text-to-Video**](https://drive.google.com/file/d/1-a7VaGGMrzxqTI1rCrQTiB_lqBjLOWcv/view?usp=share_link)
+- [**Track 1: Text-to-Text**](https://drive.google.com/file/d/1-a7VaGGMrzxqTI1rCrQTiB_lqBjLOWcv/view?usp=sharing)
+- [**Track 2: Text-to-Video**](https://drive.google.com/file/d/1vh15gpHxYV9GBICN7_EI99TGR3uHAdSP/view?usp=sharing)
 
 Each validation set consists of a small number of example queries and their gold text references. These sets are meant to help teams test their pipelines and ensure compatibility with our evaluation format before final submission.
 

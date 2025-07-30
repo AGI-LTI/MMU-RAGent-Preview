@@ -26,6 +26,8 @@ baseurl: "/MMU-RAGent-Preview"
 navbar-links:
   Submission Guidelines: "submission-guidelines"
   Getting Started: "getting-started"
+  Text-to-Text: "text-to-text"
+  Text-to-Video: "text-to-video"
   Prizes: "prizes"
   Datasets: "datasets"
 
