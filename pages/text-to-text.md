@@ -16,77 +16,47 @@ Once a team is registered the organizers will contact you on their registered em
 2. ECR Repository ARN
 3. AWS ECR access keys
 4. Port Number where the API needs to run
-5. Clueweb 22B API key (if requested)
-    - Participants can request the Clueweb 22B API key later in the competition too!
+5. Clueweb 22 API key (if requested)
+    - Participants can request the Clueweb 22 API key later in the competition too!
 
+## Starter code
 
 We provide a modular starter code template to help you build your RAG system efficiently. The codebase is structured with separate components for each stage of the pipeline, making it easy to experiment and iterate.
 
 
-
 **Starter Code GitHub Repository:** [https://github.com/AGI-LTI/MMU-RAG-Starter](https://github.com/AGI-LTI/MMU-RAG-Starter)
 
-The starter code provides a complete RAG pipeline framework with the following modular components.
 
+The starter code provides a complete RAG pipeline framework with the following modular components:
 
+### 1. Pipeline Orchestrator (`pipeline.py`)
+- Main entry point that coordinates all RAG components  
+- Handles configuration loading and pipeline execution flow
+- Manages the complete query-to-answer workflow
 
-## Core Pipeline Components
+### 2. Data Processing Pipeline
+- **Loader** (`loader.py`): Load documents from various file formats using `load_corpus(path)`
+- **Cleaner** (`cleaner.py`): Preprocess and normalize text content using `clean_text()`
+- **Tokenizer** (`tokenizer.py`): Convert text to tokens using HuggingFace models
+- **Chunker** (`chunker.py`): Split documents into overlapping chunks using `chunk_tokens()`
+- **Indexer** (`indexer.py`): Build FAISS vector index for semantic search using `build_index()`
 
-1. Pipeline Orchestrator (`pipeline.py`)
+### 3. Query Processing Components
+- **Retriever** (`retriever.py`): Search the index and retrieve relevant chunks using `retrieve()`
+- **Generator** (`generator.py`): Generate answers using retrieved context and language models
 
-   - Main entry point that coordinates all RAG components
-   - Handles configuration loading and pipeline execution flow
-   - Manages the complete query-to-answer workflow
-
-2. Data Processing Pipeline
-
-   - **Loader** (`loader.py`): Load documents from various file formats
-   - **Cleaner** (`cleaner.py`): Preprocess and normalize text content
-   - **Tokenizer** (`tokenizer.py`): Convert text to tokens using HuggingFace models
-   - **Chunker** (`chunker.py`): Split documents into overlapping chunks
-   - **Indexer** (`indexer.py`): Build FAISS vector index for semantic search
-
-3. Query Processing Components
-
-   - **Retriever** (`retriever.py`): Search the index and retrieve relevant chunks
-
-   - **Generator** (`generator.py`): Generate answers using retrieved context
-
-     
-
-**Configuration-Driven Approach**
-
-The system uses a YAML configuration file (`config.yaml`) to manage:
-
-- Data directories and file paths
-- Chunk size and overlap parameters
-- Model selections for embedding and generation
-- Retrieval parameters (top-k, etc.)
-
-
-
-## Getting Started
-
-1. Clone the starter repository: https://github.com/AGI-LTI/MMU-RAG-Starter
-2. Review the modular component structure in the `/src` folder
-3. Implement the TODO sections in each component based on your approach
-4. Test with local data
-5. Adapt the pipeline for your specific RAG strategy
-
-The modular design allows you to focus on the components most critical to your approach while providing a solid foundation for the complete RAG system.
-
-
+### 4. Testing & Validation
+- **Local Test Runner** (`local_test.py`): Comprehensive test runner to validate both `/run` and `/evaluate` endpoints
 
 ## Submission Requirements and Formats
 
-We require your submission to fulfil the following requirements for us to perform static and dynamic evaluation: 
+We require your submission to fulfill the following requirements for us to perform static and dynamic evaluation: 
 
 1. Implement a static `/evaluate` endpoint
-2. Implement a specific string API
+2. Implement a specific `/run` streaming API
 3. Submit a Docker file
 
 Detailed instructions are provided below. 
-
 
 
 ### 1. Static `/evaluate` endpoint
@@ -107,7 +77,6 @@ Content-Type: application/json
 ```json
 {
   "query": "string",
-  "reference": "string",
   "iid": "string"
 }
 ```
@@ -124,13 +93,9 @@ Content-Type: application/json
 ```
 
 
-
-
-
 ### 2. Streaming API
 
 Your system must implement a specific streaming API that follows our standardized response format. This is for us to integrate your system into our RAG-Arena live evaluation system. 
-
 
 
 #### Required Endpoint
@@ -141,12 +106,9 @@ Your service must expose the following endpoint:
 POST /run
 ```
 
-
-
 #### Request Format
 
 **Content-Type:** `application/json`
-
 
 
 #### Request Body
@@ -201,8 +163,7 @@ Each JSON object in the stream must contain these fields:
 
 | Field            | Type   | Description                                                  |
 | :--------------- | :----- | :----------------------------------------------------------- |
-| `citations`      | array  | List of citation objects (see format below)                  |
-| `citation_texts` | array  | List of citation texts (required if `citations`) is used. This should include the raw text strings that your model used for its citation. |
+| `citations`      | array  | List of citation URLs (see format below)                    |
 | `error`          | string | Error message if something goes wrong (stops the stream)     |
 
 ##### Citation Format (Optional)
@@ -216,15 +177,8 @@ Citation is optional. Citations are displayed in the frontend as numbered clicka
   "citations": [
     "https://example.com/article1",
     "https://example.com/article2"
-  ], 
-  
-  "citation_texts": [
-  	"This is the informational text used in the first citation.", 
-  	"This is the informational text used in the second citation."
   ]
-  
 }
-
 ```
 
 > **Note:** Citations always appear as `[1]`, `[2]`, `[3]` regardless of URL content. Each number is a clickable link to the corresponding URL.
@@ -288,6 +242,10 @@ COPY . .
 
 EXPOSE 8000
 
+# Flask (WSGI)
+CMD ["gunicorn", "main:app", "--workers", "4", "--threads", "4", "--worker-class", "gthread", "--bind", "0.0.0.0:8000"]
+
+# FastAPI (ASGI) – single-line
 CMD ["gunicorn", "main:app", "-w", "4", "-k", "uvicorn.workers.UvicornWorker", "--bind", "0.0.0.0:8000"]
 ```
 
@@ -315,5 +273,4 @@ Verify that:
 
 - The main application handles user session management, database logging, and frontend integration
 - Your service only needs to focus on generating high-quality research responses
-- Response times should be reasonable (typically under 2 minutes for complex queries)
 - The system supports both streaming and non-streaming implementations, but streaming is preferred for better user experience
