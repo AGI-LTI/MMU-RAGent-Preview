@@ -36,13 +36,13 @@ Both tracks offer:
 
 - A **starter codebase** to speed up development.
 
-- API access to ClueWeb-22A
+- API access to ClueWeb-22B
 
 - Support for **static** and **dynamic** submission modes.
 
   
 
-## ClueWeb-22A Search API Access
+## ClueWeb-22B Search API Access
 
 **Base URL:**`https://clueweb22.us/search`
 
