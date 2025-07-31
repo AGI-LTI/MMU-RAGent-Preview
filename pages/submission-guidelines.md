@@ -55,7 +55,7 @@ Each image should:
 
 Once you have pushed your Docker image to the ECR repository with the tag **latest** you should notify the organizers by filling the following google form.
 
-**Link:** https://forms.gle/9uNcyrwDuZNZA569A
+**Link:** [https://forms.gle/9uNcyrwDuZNZA569A](https://forms.gle/9uNcyrwDuZNZA569A)
 
 NOTE :
 
@@ -75,7 +75,7 @@ Once a team is registered the organizers will contact you on their registered em
 
 You should upload your results to your assigned Google Drive folder and fill out the following google form.
 
-**Link:** https://forms.gle/wRVKH7YfZXaM5QS1A
+**Link:** [https://forms.gle/wRVKH7YfZXaM5QS1A](https://forms.gle/wRVKH7YfZXaM5QS1A)
 
 Note: Submission of validation set generations entitles you to a chance to win **non-cash prizes only**. These submissions are **not eligible for cash prizes** to ensure fairness.
 
