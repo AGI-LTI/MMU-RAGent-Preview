@@ -8,6 +8,16 @@ Welcome to the MMU-RAG competition! This page contains everything you might need
 
 ------
 
+### Resources 
+
+Once a team is registered the organizers will contact you on their registered email (preferably gmail) and will be assigning the following items.
+
+1. Team ID
+2. ECR Repository ARN
+3. AWS ECR access keys
+4. Port Number where the API needs to run
+5. Clueweb 22B API key (if requested)
+    - Participants can request the Clueweb 22B API key later in the competition too!
 
 
 We provide a modular starter code template to help you build your RAG system efficiently. The codebase is structured with separate components for each stage of the pipeline, making it easy to experiment and iterate.
