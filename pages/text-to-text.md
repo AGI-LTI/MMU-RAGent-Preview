@@ -242,10 +242,7 @@ COPY . .
 
 EXPOSE 8000
 
-# Flask (WSGI)
-CMD ["gunicorn", "main:app", "--workers", "4", "--threads", "4", "--worker-class", "gthread", "--bind", "0.0.0.0:8000"]
-
-# FastAPI (ASGI) – single-line
+# FastAPI (ASGI)
 CMD ["gunicorn", "main:app", "-w", "4", "-k", "uvicorn.workers.UvicornWorker", "--bind", "0.0.0.0:8000"]
 ```
 

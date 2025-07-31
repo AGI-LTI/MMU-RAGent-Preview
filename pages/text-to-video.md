@@ -158,8 +158,6 @@ COPY . .
 # Expose port
 EXPOSE 4001
 
-# Use Gunicorn to manage Uvicorn workers for production
-# This command starts Gunicorn with 15 worker processes.
-# Each worker is a Uvicorn process, allowing for parallel request handling.
-CMD ["gunicorn", "-w", "2", "-k", "uvicorn.workers.UvicornWorker", "video_baseline:app", "--bind", "0.0.0.0:4001", "--timeout", "2000"]
+# FastAPI (ASGI)
+CMD ["gunicorn", "video_baseline:app", "-w", "2", "-k", "uvicorn.workers.UvicornWorker", "--bind", "0.0.0.0:4001", "--timeout", "2000"]
 ```
