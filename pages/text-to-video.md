@@ -27,8 +27,8 @@ Once a team is registered the organizers will contact you on their registered em
 3. AWS ECR access keys
 4. S3 bucket name and region
 5. Port Number where the API needs to run
-6. Clueweb 22B API key (if requested)
-    - Participants can request the Clueweb 22B API key later in the competition too!
+6. Clueweb 22 API key (if requested)
+    - Participants can request the Clueweb 22 API key later in the competition too!
 
 
 

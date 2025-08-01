@@ -36,13 +36,13 @@ Both tracks offer:
 
 - A **starter codebase** to speed up development.
 
-- API access to ClueWeb-22B
+- API access to ClueWeb-22
 
 - Support for **static** and **dynamic** submission modes.
 
   
 
-## ClueWeb-22B Search API Access
+## ClueWeb-22 Search API Access
 
 **Base URL:**`https://clueweb22.us/search`
 
@@ -74,8 +74,13 @@ GET https://clueweb22.us/search
 | ----- | ------- | -------- | ----------------------------- |
 | query | string  | yes      | The search query string       |
 | k     | integer | yes      | Number of documents to return |
+| cw22_a | boolean | no      | Use ClueWeb22-A instead of default ClueWeb22-B |
 
-
+> **Note:** The ClueWeb search API uses ClueWeb22-B by default, but it also supports ClueWeb22-A. To use ClueWeb22-A, add the parameter `cw22_a=True` to your query.
+>
+> **Examples:**
+> - ClueWeb22-B (default): `https://clueweb22.us/search?query=cmu&k=1`
+> - ClueWeb22-A: `https://clueweb22.us/search?query=cmu&k=1&cw22_a=True`
 
 **Response Format:**
 
@@ -106,10 +111,15 @@ import requests
 RETRIEVER_URL     = "https://clueweb22.us/search"
 RETRIEVER_API_KEY = "YOUR_API_KEY_HERE"
 
-def query_clueweb(query: str, k: int):
+def query_clueweb(query: str, k: int, use_cw22_a: bool = False):
     """
     Query the ClueWeb Search API and return a list of documents.
     Each document is a dict with 'text' and 'url' keys.
+    
+    Args:
+        query: The search query string
+        k: Number of documents to return
+        use_cw22_a: If True, use ClueWeb22-A instead of default ClueWeb22-B
     """
     headers = {
         'x-api-key': RETRIEVER_API_KEY
@@ -118,6 +128,9 @@ def query_clueweb(query: str, k: int):
         "query": query,
         "k": k
     }
+    
+    if use_cw22_a:
+        params["cw22_a"] = True
 
     response = requests.get(RETRIEVER_URL, params=params, headers=headers)
     if response.status_code != 200:
@@ -141,8 +154,17 @@ def query_clueweb(query: str, k: int):
 
 # Usage example
 if __name__ == "__main__":
+    # Search using ClueWeb22-B (default)
     docs = query_clueweb("open source search engines", 5)
+    print("ClueWeb22-B Results:")
     for i, d in enumerate(docs, 1):
+        print(f"Document {i} URL: {d['url']}")
+        print(f"Excerpt: {d['text'][:200]}…\n")
+    
+    # Search using ClueWeb22-A
+    docs_a = query_clueweb("open source search engines", 5, use_cw22_a=True)
+    print("\nClueWeb22-A Results:")
+    for i, d in enumerate(docs_a, 1):
         print(f"Document {i} URL: {d['url']}")
         print(f"Excerpt: {d['text'][:200]}…\n")
 ```
