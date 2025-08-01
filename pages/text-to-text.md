@@ -4,11 +4,7 @@ title: Text-to-Text Track
 permalink: /text-to-text
 ---
 
-Welcome to the MMU-RAG competition! This page contains everything you might need to start building and submitting your system for the text-to-text track.
-
-!! **Now Accepting Deep Research Systems** !!
-In addition to standard RAG pipelines, we welcome submissions from *deep research systems*—models that perform multi-hop retrieval, structured reasoning, or integrate external tools or knowledge bases beyond conventional retrievers. If your system pushes the boundaries of retrieval and generation, we encourage you to participate.
-
+Welcome to the MMU-RAG competition! This page contains everything you might need to start building and submitting your system for the text-to-text track. This track accepts both RAG and/or Deep Research systems. 
 
 ------
 
