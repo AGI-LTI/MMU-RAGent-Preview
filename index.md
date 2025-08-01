@@ -29,6 +29,10 @@ Whether you're advancing retrieval strategies, generation quality, or multimodal
 
 This track reflects the standard text-to-text RAG application. Participants are expected to submit systems that retrieve from a text corpus, and generate text responses given a text query. Participants may use our provided corpora, or augment their generations with any other background corpora or (proprietary) search APIs, provided that all external resources are clearly documented in their submissions.
 
+!! **Now Accepting Deep Research Systems** !!
+In addition to standard RAG pipelines, we welcome submissions from *deep research systems*—models that perform multi-hop retrieval, structured reasoning, or integrate external tools or knowledge bases beyond conventional retrievers. If your system pushes the boundaries of retrieval and generation, we encourage you to participate.
+
+
 [Click here to download validation queries](https://drive.google.com/file/d/1-a7VaGGMrzxqTI1rCrQTiB_lqBjLOWcv/view?usp=sharing) <!-- Replace with actual download link -->
 
 ### Track B: Text-to-Video
@@ -63,6 +67,11 @@ However:
 - **Human-verified outputs** or any form of **human intervention** are **not allowed**, to ensure full replicability of the systems.
 
 ---
+
+
+## Contact Us
+
+For any questions or clarifications, email the organizers directly at: mmu-rag@andrew.cmu.edu
 
 ## Organizers
 
