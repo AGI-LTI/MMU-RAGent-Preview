@@ -27,8 +27,8 @@ Once a team is registered the organizers will contact you on their registered em
 3. AWS ECR access keys
 4. S3 bucket name and region
 5. Port Number where the API needs to run
-6. Clueweb 22B API key (if requested)
-    - Participants can request the Clueweb 22B API key later in the competition too!
+6. Clueweb 22 API key (if requested)
+    - Participants can request the Clueweb 22 API key later in the competition too!
 
 
 
@@ -158,8 +158,6 @@ COPY . .
 # Expose port
 EXPOSE 4001
 
-# Use Gunicorn to manage Uvicorn workers for production
-# This command starts Gunicorn with 15 worker processes.
-# Each worker is a Uvicorn process, allowing for parallel request handling.
-CMD ["gunicorn", "-w", "2", "-k", "uvicorn.workers.UvicornWorker", "video_baseline:app", "--bind", "0.0.0.0:4001", "--timeout", "2000"]
+# FastAPI (ASGI)
+CMD ["gunicorn", "video_baseline:app", "-w", "2", "-k", "uvicorn.workers.UvicornWorker", "--bind", "0.0.0.0:4001", "--timeout", "2000"]
 ```
