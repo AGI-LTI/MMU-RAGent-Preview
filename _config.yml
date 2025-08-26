@@ -24,12 +24,14 @@ baseurl: "/MMU-RAGent-Preview"
 ###############################################
 
 navbar-links:
-  Submission Guidelines: "submission-guidelines"
   Getting Started: "getting-started"
+  Static Evaluation: "static-evaluation"
+  Full Submission: "full-submission"
   Text-to-Text: "text-to-text"
   Text-to-Video: "text-to-video"
   Prizes: "prizes"
   Datasets: "datasets"
+
 
 ################
 # --- Logo --- #
