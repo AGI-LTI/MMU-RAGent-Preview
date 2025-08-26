@@ -21,12 +21,12 @@ MMU-RAG features two exciting tracks:
 #### **Track A: Text-to-Text (T2T)**
 
 Build a retrieval-augmented system that answers complex, open-ended user queries using textual sources.
- ⟶ Click [here](/MMU-RAGent-Preview/text-to-text) to view T2T track details 
+ ⟶ Click [here](/MMU-RAGent/text-to-text) to view T2T track details 
 
 #### **Track B: Text-to-Video (T2V)**
 
 Develop a system that can ground open-ended queries in retrieved video content, generating coherent video-based responses.
- ⟶ Click [here](/MMU-RAGent-Preview/text-to-video) to view T2V track details 
+ ⟶ Click [here](/MMU-RAGent/text-to-video) to view T2V track details 
 
 
 
@@ -36,9 +36,56 @@ Both tracks offer:
 
 - A **starter codebase** to speed up development.
 
-- API access to ClueWeb-22
+- API access to ClueWeb-22 and FineWeb
 
 - Support for **static** and **dynamic** submission modes.
+
+### FineWeb Search API
+
+```
+GET https://clueweb22.us/fineweb/search
+```
+
+**Description:** This endpoint is for the FineWeb dataset. You may use FineWeb without an API key for temporary testing while awaiting ClueWeb API key approval.
+
+**Parameters:**
+- `query` (string): The search query
+- `k` (integer): The number of documents to return
+
+**Response Format:**
+
+```json
+{
+  "results": [Base64-encoded JSON documents]
+}
+```
+
+**Example Code (Python):**
+```python
+import requests
+import base64
+import json
+
+def query_fineweb(query, num_docs):
+    request_url = f"https://clueweb22.us/fineweb/search?query={query}&k={num_docs}"
+    
+    response = requests.get(request_url)
+    
+    if response.status_code != 200:
+        raise Exception(f"Error querying FineWeb: {response.status_code}")
+    
+    json_data = response.json()
+
+    results = json_data.get("results", [])
+    for returned_document in results:
+        # Assuming each document in 'results' is a base64 encoded JSON string
+        decoded_result = base64.b64decode(returned_document).decode("utf-8")
+        parsed_result = json.loads(decoded_result)
+        
+        text = parsed_result["text"]
+        url = parsed_result["url"]
+```
+
 
   
 
@@ -56,7 +103,7 @@ All requests must include an API key:
 x-api-key: <YOUR_RETRIEVER_API_KEY>
 ```
 
-> Your API key will be emailed to you after your team registers.
+> Your API key will be sent to you after your ClueWeb application is approved.
 
 ------
 
