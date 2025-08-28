@@ -6,6 +6,10 @@ permalink: /text-to-video
 
 Welcome to the MMU-RAG competition! This page contains everything you might need to start building and submitting your system for the text-to-video track.
 
+**Submission Options:**
+- [Static Submission Guidelines](/MMU-RAGent-Preview/static-submission/) - Option 1: Static evaluation on validation set (non-cash prizes)
+- [Full System Submission Guidelines](/MMU-RAGent-Preview/full-submission/) - Option 2: Complete system submission (main competition, cash prizes)
+
 ------
 
 
@@ -30,6 +34,58 @@ Once a team is registered the organizers will contact you on their registered em
 6. Clueweb 22 API key (if requested)
     - Participants can request the Clueweb 22 API key later in the competition too!
 
+---
+
+### FineWeb Search API
+
+```
+GET https://clueweb22.us/fineweb/search
+```
+
+**Description:** This endpoint is for the FineWeb dataset. You may use FineWeb without an API key for temporary testing while awaiting ClueWeb API key approval.
+
+**Parameters:**
+
+-   `query` (string): The search query
+-   `k` (integer): The number of documents to return
+
+**Response Format:**
+
+```json
+{
+  "results": [Base64-encoded JSON documents]
+}
+```
+
+### ClueWeb-22 Search API Access
+
+**Base URL:**`https://clueweb22.us/search`
+
+#### Authentication
+
+All requests must include an API key:
+
+```
+x-api-key: <YOUR_RETRIEVER_API_KEY>
+```
+
+> Your API key will be sent to you after your ClueWeb application is approved.
+
+#### HTTP Request
+
+```
+GET https://clueweb22.us/search
+```
+
+**Query Parameters:**
+
+| Name | Type | Required | Description |
+| :--- | :--- | :--- | :--- |
+| `query` | string | yes | The search query string |
+| `k` | integer | yes | Number of documents to return |
+| `cw22_a` | boolean | no | Use ClueWeb22-A instead of default ClueWeb22-B |
+
+---
 
 
 ### Submission Requirements and Formats

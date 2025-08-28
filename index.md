@@ -36,7 +36,7 @@ This option is perfect for teams who want to benchmark their models, test their 
 -   **How to submit:** Upload your generated outputs as files (`.jsonl` for text, a compressed folder for video) to a designated Google Drive folder.
 -   **What you're eligible for:** These submissions are eligible for **non-cash prizes**, such as honorable mentions and features on our website. This option does not qualify for cash prizes.
 
-[See detailed static submission guidelines here](/MMU-RAGent-Preview/static-evaluation/)
+[See detailed static submission guidelines here](/MMU-RAGent-Preview/static-submission/)
 
 ### Option 2: Full System Submission (Cash Prizes)
 
@@ -70,55 +70,47 @@ Participants are expected to submit systems that retrieve from a text corpus, an
 
 [Click here to download validation queries](https://drive.google.com/file/d/1vh15gpHxYV9GBICN7_EI99TGR3uHAdSP/view?usp=sharing)
 
-------
 
-## Rules
-
-The goal of the competition is to create a RAG system that is **robust to real-user queries**. We provide starter code for a simple RAG system, comprising three components:
-
-1. An **embedding model**
-2. A **retriever**
-3. A **generation model**
-
-
-
-### **Data and Models**
-
-To encourage diversity in submissions, participants may use **any open- or close-source data or models**.
-
-However:
-
-- Systems that include **close-source and/or proprietary components** will be tagged clearly on leaderboards.
-- All retrieval methods, generation models, corpora, and external tools or APIs must be **clearly specified**.
-- For systems with close-source components, please provide as much detail as possible for fair evaluation.
-- **Commercial API-only deep research systems** (e.g.,  perplexity sonar API, Open AI deep research API) are **not allowed**.
-
-| Component                     | Open Source                                                  | Close Source                                                 |
-| ----------------------------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
-| Embedding / Retrieval Modules | Open-weight models: publicly available for public download and use (i.e available on HuggingFace or public GitHub repository) | Model weights are unavailable for public download and use.   |
-| Retrieval Corpus              | Fixed corpora that is available for public download and use. | Search implemented using commercial and/or proprietary API, often giving access to whole-of-internet or equivalent. |
-| Generation Modules            | Open-weight models: publicly available for public download and use (i.e available on HuggingFace or public GitHub repository) | Model weights are unavailable for public download and use    |
-
-Please feel free to consult the organizing team if any clarifications are required. 
-
-
-
-### **System Restrictions**
-
-- All outputs must be **model-generated**.
-- **Human-verified outputs** or any form of **human intervention** are **not allowed**, to ensure full replicability of the systems.
 
 
 
 # Calendar
 
-| **Date**            | **Event**                                                    |
-| ------------------- | ------------------------------------------------------------ |
-| **Aug 1, 2025**     | 🚀 Competition launch & dataset release                       |
-| **Oct 15, 2025**    | 📥 Submission deadline (all tracks)                           |
-| **Oct 15–21, 2025** | 🧪 **RAG-Arena** live evaluation window (real-time human feedback) |
-| **Dec 6-7, 2025**   | 🎤 **MMU-RAG Workshop at NeuRIPS 2025**<br />• Presentations by selected teams<br />• Winner and runner(s)-up announced |
+### Aug 1: **Competition launch & dataset release**
+- Two tracks: [Text-to-Text](/MMU-RAGent-Preview/text-to-text) and [Text-to-Video](/MMU-RAGent-Preview/text-to-video)
 
+### Aug 1 - Oct 15: ACTION REQUIRED: Competition Submission
+- Two options: 
+    - [Static Submission](/MMU-RAGent-Preview/static-submission) (run on public validation set and upload a `.jsonl` for non-cash prizes)
+    - [Full System Submission](/MMU-RAGent-Preview/full-submission) (submit a Docker image for private test set evaluation + real-time user evaluation, to top the leaderboard and get cash prizes)
+
+### Oct 15–21: Organizers Running Evaluations
+- Submissions will be evaluated using a blend of:
+    - Automatic metrics
+    - LLM-as-a-judge evaluations
+    - Real-time user feedback from our RAG-Arena
+
+### Dec 6-7: **MMU-RAG Workshop at NeurIPS 2025**
+- Presentations by selected teams
+- Winners and runner(s)-up announced
+
+---
+
+## Prizes
+
+We’re excited to offer both **monetary prizes** and **academic exposure opportunities** to recognize outstanding submissions.
+
+### 💰 Prize Pool
+
+Thanks to the support of Amazon, MMU-RAG offers a **$10,000 prize pool in AWS credits**. Prizes will be awarded to top-performing teams across both tracks.
+
+### 🎤 Present at NeurIPS
+
+Top teams will also be invited to **present their systems** during the **MMU-RAG competition session at NeurIPS 2025**. This is a unique opportunity to share your work with the community.
+
+### 🥇 Eligibility
+
+Prize eligibility requires full system reproducibility and clear documentation of all components. Only participants in the **Full System Submission** option are eligible for cash prizes.
 
 ---
 

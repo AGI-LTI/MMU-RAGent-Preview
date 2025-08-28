@@ -1,7 +1,7 @@
 ---
 layout: page
-title: Static Evaluation Guidelines
-permalink: /static-evaluation/
+title: Static Submission Guidelines
+permalink: /static-submission/
 ---
 
 This page provides instructions for **Option 1: Static Evaluation on the Validation Set**. This participation option is for teams who wish to benchmark their models on the public validation set and are eligible for non-cash prizes.

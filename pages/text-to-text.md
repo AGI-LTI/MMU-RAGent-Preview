@@ -4,7 +4,11 @@ title: Text-to-Text Track
 permalink: /text-to-text
 ---
 
-Welcome to the MMU-RAG competition! This page contains everything you might need to start building and submitting your system for the text-to-text track. This track accepts both RAG and/or Deep Research systems. 
+Welcome to the MMU-RAG competition! This page contains everything you might need to start building and submitting your system for the text-to-text track. This track accepts both RAG and/or Deep Research systems.
+
+**Submission Options:**
+- [Static Submission Guidelines](/MMU-RAGent-Preview/static-submission/) - Option 1: Static evaluation on validation set (non-cash prizes)
+- [Full System Submission Guidelines](/MMU-RAGent-Preview/full-submission/) - Option 2: Complete system submission (main competition, cash prizes)
 
 ------
 
@@ -19,7 +23,9 @@ Once a team is registered the organizers will contact you on their registered em
 5. Clueweb 22 API key (if requested)
     - Participants can request the Clueweb 22 API key later in the competition too!
 
-## Starter code
+---
+
+### Starter code
 
 We provide a modular starter code template to help you build your RAG system efficiently. The codebase is structured with separate components for each stage of the pipeline, making it easy to experiment and iterate.
 
@@ -29,26 +35,80 @@ We provide a modular starter code template to help you build your RAG system eff
 
 The starter code provides a complete RAG pipeline framework with the following modular components:
 
-### 1. Pipeline Orchestrator (`pipeline.py`)
+#### 1. Pipeline Orchestrator (`pipeline.py`)
 - Main entry point that coordinates all RAG components  
 - Handles configuration loading and pipeline execution flow
 - Manages the complete query-to-answer workflow
 
-### 2. Data Processing Pipeline
+#### 2. Data Processing Pipeline
 - **Loader** (`loader.py`): Load documents from various file formats using `load_corpus(path)`
 - **Cleaner** (`cleaner.py`): Preprocess and normalize text content using `clean_text()`
 - **Tokenizer** (`tokenizer.py`): Convert text to tokens using HuggingFace models
 - **Chunker** (`chunker.py`): Split documents into overlapping chunks using `chunk_tokens()`
 - **Indexer** (`indexer.py`): Build FAISS vector index for semantic search using `build_index()`
 
-### 3. Query Processing Components
+#### 3. Query Processing Components
 - **Retriever** (`retriever.py`): Search the index and retrieve relevant chunks using `retrieve()`
 - **Generator** (`generator.py`): Generate answers using retrieved context and language models
 
-### 4. Testing & Validation
+#### 4. Testing & Validation
 - **Local Test Runner** (`local_test.py`): Comprehensive test runner to validate both `/run` and `/evaluate` endpoints
 
-## Submission Requirements and Formats
+
+---
+
+### FineWeb Search API
+
+```
+GET https://clueweb22.us/fineweb/search
+```
+
+**Description:** This endpoint is for the FineWeb dataset. You may use FineWeb without an API key for temporary testing while awaiting ClueWeb API key approval.
+
+**Parameters:**
+
+-   `query` (string): The search query
+-   `k` (integer): The number of documents to return
+
+**Response Format:**
+
+```json
+{
+  "results": [Base64-encoded JSON documents]
+}
+```
+
+### ClueWeb-22 Search API Access
+
+**Base URL:**`https://clueweb22.us/search`
+
+#### Authentication
+
+All requests must include an API key:
+
+```
+x-api-key: <YOUR_RETRIEVER_API_KEY>
+```
+
+> Your API key will be sent to you after your ClueWeb application is approved.
+
+#### HTTP Request
+
+```
+GET https://clueweb22.us/search
+```
+
+**Query Parameters:**
+
+| Name | Type | Required | Description |
+| :--- | :--- | :--- | :--- |
+| `query` | string | yes | The search query string |
+| `k` | integer | yes | Number of documents to return |
+| `cw22_a` | boolean | no | Use ClueWeb22-A instead of default ClueWeb22-B |
+
+---
+
+### Submission Requirements and Formats
 
 We require your submission to fulfill the following requirements for us to perform static and dynamic evaluation: 
 
@@ -59,20 +119,18 @@ We require your submission to fulfill the following requirements for us to perfo
 Detailed instructions are provided below. 
 
 
-### 1. Static `/evaluate` endpoint
+#### Static `/evaluate` endpoint
 
 Your system must implement a static `/evaluate` endpoint that accepts validation queries and returns responses. This will be used to generate a `.jsonl` submission file.
 
-#### Required Endpoint
+##### Required Endpoint
 
 ```
 POST /evaluate
 Content-Type: application/json
 ```
 
-
-
-#### Request Format
+##### Request Format
 
 ```json
 {
@@ -81,9 +139,7 @@ Content-Type: application/json
 }
 ```
 
-
-
-#### Response Format
+##### Response Format
 
 ```json
 {
@@ -92,13 +148,14 @@ Content-Type: application/json
 }
 ```
 
+---
 
-### 2. Streaming API
+#### Streaming API
 
 Your system must implement a specific streaming API that follows our standardized response format. This is for us to integrate your system into our RAG-Arena live evaluation system. 
 
 
-#### Required Endpoint
+##### Required Endpoint
 
 Your service must expose the following endpoint:
 
@@ -106,12 +163,12 @@ Your service must expose the following endpoint:
 POST /run
 ```
 
-#### Request Format
+
+##### Request Format
 
 **Content-Type:** `application/json`
 
-
-#### Request Body
+##### Request Body
 
 ```
 {
@@ -133,7 +190,7 @@ POST /run
 
 
 
-#### Response Format
+##### Response Format
 
 * **Content-Type:** `text/event-stream` (preferred) or `text/plain`
 
@@ -146,7 +203,7 @@ data: {"intermediate_steps": "...", "final_report": "...", "is_intermediate": fa
 
 
 
-#### Required JSON Response Fields
+##### Required JSON Response Fields
 
 Each JSON object in the stream must contain these fields:
 
@@ -165,6 +222,7 @@ Each JSON object in the stream must contain these fields:
 | :--------------- | :----- | :----------------------------------------------------------- |
 | `citations`      | array  | List of citation URLs (see format below)                    |
 | `error`          | string | Error message if something goes wrong (stops the stream)     |
+
 
 ##### Citation Format (Optional)
 
@@ -185,25 +243,25 @@ Citation is optional. Citations are displayed in the frontend as numbered clicka
 
 
 
-#### Streaming Response Pattern
+##### Streaming Response Pattern
 
 Your service should follow this behavioral pattern:
 
-##### 1. Thinking Phase
+###### 1. Thinking Phase
 
 - Start with `is_intermediate: true`
 - Populate `intermediate_steps` with research process
 - Set `final_report: null`
 - Set `complete: false`
 
-##### 2. Answer Generation Phase
+###### 2. Answer Generation Phase
 
 - Switch to `is_intermediate: false`
 - Start populating `final_report` with answer content
 - Keep accumulated `intermediate_steps`
 - Set `complete: false`
 
-##### 3. Completion
+###### 3. Completion
 
 - Send final message with `complete: true`
 - Include final complete answer in `final_report`
@@ -211,7 +269,7 @@ Your service should follow this behavioral pattern:
 
 
 
-#### Error Handling
+##### Error Handling
 
 If your service encounters an error, send an error response and stop the stream:
 
@@ -222,7 +280,7 @@ If your service encounters an error, send an error response and stop the stream:
 }
 ```
 
-
+---
 
 ### 3. Dockerizing Your System
 
@@ -246,7 +304,9 @@ EXPOSE 8000
 CMD ["gunicorn", "main:app", "-w", "4", "-k", "uvicorn.workers.UvicornWorker", "--bind", "0.0.0.0:8000"]
 ```
 
-#### Testing Your Implementation
+---
+
+### Testing Your Implementation
 
 You can test your service independently by sending POST requests to `/run`:
 
@@ -264,9 +324,9 @@ Verify that:
 - Final message has `complete: true`
 - Intermediate steps use `|||---|||` separators
 
+---
 
-
-#### Notes
+### Notes
 
 - The main application handles user session management, database logging, and frontend integration
 - Your service only needs to focus on generating high-quality research responses

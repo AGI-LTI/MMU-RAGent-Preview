@@ -25,12 +25,10 @@ baseurl: "/MMU-RAGent-Preview"
 
 navbar-links:
   Getting Started: "getting-started"
-  Static Evaluation: "static-evaluation"
+  Static Submission: "static-submission"
   Full Submission: "full-submission"
   Text-to-Text: "text-to-text"
   Text-to-Video: "text-to-video"
-  Prizes: "prizes"
-  Datasets: "datasets"
 
 
 ################
