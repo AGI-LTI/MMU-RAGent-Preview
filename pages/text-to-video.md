@@ -6,10 +6,6 @@ permalink: /text-to-video
 
 Welcome to the MMU-RAG competition! This page contains everything you might need to start building and submitting your system for the text-to-video track.
 
-**Submission Options:**
-- [Static Submission Guidelines](/MMU-RAGent-Preview/static-submission/) - Option 1: Static evaluation on validation set (non-cash prizes)
-- [Full System Submission Guidelines](/MMU-RAGent-Preview/full-submission/) - Option 2: Complete system submission (main competition, cash prizes)
-
 ------
 
 
@@ -217,3 +213,9 @@ EXPOSE 4001
 # FastAPI (ASGI)
 CMD ["gunicorn", "video_baseline:app", "-w", "2", "-k", "uvicorn.workers.UvicornWorker", "--bind", "0.0.0.0:4001", "--timeout", "2000"]
 ```
+
+---
+
+**Submission Options:**
+- [Static Submission Guidelines](/MMU-RAGent-Preview/static-submission/) - Option 1: Static evaluation on validation set (non-cash prizes)
+- [Full System Submission Guidelines](/MMU-RAGent-Preview/full-submission/) - Option 2: Complete system submission (main competition, cash prizes)

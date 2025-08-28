@@ -6,10 +6,6 @@ permalink: /text-to-text
 
 Welcome to the MMU-RAG competition! This page contains everything you might need to start building and submitting your system for the text-to-text track. This track accepts both RAG and/or Deep Research systems.
 
-**Submission Options:**
-- [Static Submission Guidelines](/MMU-RAGent-Preview/static-submission/) - Option 1: Static evaluation on validation set (non-cash prizes)
-- [Full System Submission Guidelines](/MMU-RAGent-Preview/full-submission/) - Option 2: Complete system submission (main competition, cash prizes)
-
 ------
 
 ### Resources 
@@ -331,3 +327,9 @@ Verify that:
 - The main application handles user session management, database logging, and frontend integration
 - Your service only needs to focus on generating high-quality research responses
 - The system supports both streaming and non-streaming implementations, but streaming is preferred for better user experience
+
+---
+
+**Submission Options:**
+- [Static Submission Guidelines](/MMU-RAGent-Preview/static-submission/) - Option 1: Static evaluation on validation set (non-cash prizes)
+- [Full System Submission Guidelines](/MMU-RAGent-Preview/full-submission/) - Option 2: Complete system submission (main competition, cash prizes)
