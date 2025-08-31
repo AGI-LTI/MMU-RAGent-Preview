@@ -847,6 +847,9 @@ table tr {
 table tr:nth-child(2n) {
   background-color: #f8f8f8;
 }
+table.no-stripe tr:nth-child(2n) {
+  background-color: var(--page-col);
+}
 table tr th,
 table tr td {
   border: 1px solid #cccccc;

@@ -19,6 +19,46 @@ Submissions are evaluated using a blend of:
 - LLM-as-a-judge evaluations
 - Real-time human feedback through our interactive RAG-Arena platform
 
+### Evaluation Methods and Metrics
+
+**Illustration of our static evaluation methods and their corresponding metrics.**
+
+<table class="no-stripe">
+<thead>
+<tr>
+<th><strong>Track</strong></th>
+<th><strong>Evaluation Method</strong></th>
+<th><strong>Evaluation Metric</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td rowspan="3"><strong>Text-to-text</strong></td>
+<td>Automatic</td>
+<td>Rouge-L, BERTScore</td>
+</tr>
+<tr>
+<td>LLM-as-a-Judge</td>
+<td rowspan="2">Semantic Similarity, Coverage, Factuality, Citation Quality</td>
+</tr>
+<tr>
+<td>Human Likert Ratings</td>
+</tr>
+<tr>
+<td rowspan="3"><strong>Text-to-video</strong></td>
+<td>Automatic</td>
+<td>Subject Consistency, Background Consistency, Motion Smoothness, Dynamic Degree, Aesthetic Quality, Imaging Quality</td>
+</tr>
+<tr>
+<td>LLM-as-a-Judge</td>
+<td rowspan="2">Relevance, Precision, Recall, Usefulness</td>
+</tr>
+<tr>
+<td>Human Likert Ratings</td>
+</tr>
+</tbody>
+</table>
+
 Whether you're advancing retrieval strategies, generation quality, or multimodal outputs, this is your opportunity to benchmark your system in a setting that reflects actual user needs.
 
 ------
